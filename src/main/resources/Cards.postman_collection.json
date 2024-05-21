@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "83c09c07-cc2d-410a-b94d-1961f1b0eefb",
+		"name": "Cards",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32100283"
+	},
+	"item": [
+		{
+			"name": "Create Card",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"product_id\": \"123456\",\n    \"card_holder_name\": \"Edward Loaiza\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/bank-inc/card",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"card"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Number",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/bank-inc/card/123456/number",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"card",
+						"123456",
+						"number"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Block Card",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/bank-inc/card/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"card",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recharge Card",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_id\": \"1234566079136284\",\n    \"balance\": 5.0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/bank-inc/card/balance",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"card",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/bank-inc/card/balance/1234566079136284",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"card",
+						"balance",
+						"1234566079136284"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_id\": \"1234566079136284\",\n    \"price\": 20.0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/bank-inc/transaction/purchase",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"transaction",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Annul Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_id\": \"1234566079136284\",\n    \"transaction_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/bank-inc/transaction/anulation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank-inc",
+						"transaction",
+						"anulation"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

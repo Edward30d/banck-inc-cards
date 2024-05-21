@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banck-inc-cards
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banck-inc-cards
+  template:
+    metadata:
+      labels:
+        app: banck-inc-cards
+    spec:
+      containers:
+        - name: banck-inc-cards
+          image: banck-inc-cards:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_DATABASE
+              value: bank
+            - name: MYSQL_ENDPOINT
+              value: mysql-service:3306
+            - name: MYSQL_PASSWORD
+              value: secret
+            - name: MYSQL_USER
+              value: root
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banck-inc-cards-service
+spec:
+  selector:
+    app: banck-inc-cards
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: secret
+            - name: MYSQL_DATABASE
+              value: bank
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: secret
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  mysql:
+    image: "mysql:latest"
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=bank
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./migrations/mysql/init-database.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  mysql:
+

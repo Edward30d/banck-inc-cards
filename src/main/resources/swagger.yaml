@@ -1,0 +1,201 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080/bank-inc
+    description: Generated server url
+paths:
+  /transaction/purchase:
+    post:
+      tags:
+        - transaction-controller
+      operationId: purchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/TransactionDto"
+  /transaction/anulation:
+    post:
+      tags:
+        - transaction-controller
+      operationId: annulation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionAnnulDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/TransactionAnnulDto"
+  /card:
+    post:
+      tags:
+        - card-controller
+      operationId: createNewCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /card/balance:
+    post:
+      tags:
+        - card-controller
+      operationId: rechargeCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RechargeDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/RechargeDto"
+  /card/{productId}/number:
+    get:
+      tags:
+        - card-controller
+      operationId: createNewCard_1
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            pattern: "\\d{6}"
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/CardDto"
+  /card/balance/{cardId}:
+    get:
+      tags:
+        - card-controller
+      operationId: getCardBalance
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            pattern: "\\d{16}"
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/RechargeDto"
+  /card/{cardId}:
+    delete:
+      tags:
+        - card-controller
+      operationId: blockCard
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            pattern: \d+
+            type: string
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    TransactionDto:
+      required:
+        - cardId
+        - price
+      type: object
+      properties:
+        transaction_id:
+          type: integer
+          format: int32
+        card_id:
+          pattern: "\\d{16}"
+          type: string
+        price:
+          minimum: 1
+          type: number
+    TransactionAnnulDto:
+      required:
+        - cardId
+        - transactionId
+      type: object
+      properties:
+        card_id:
+          pattern: "\\d{16}"
+          type: string
+        transaction_id:
+          minimum: 1
+          type: integer
+          format: int32
+    CardDto:
+      required:
+        - cardHolderName
+        - productId
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        card_number:
+          type: string
+        product_id:
+          pattern: "\\d{6}"
+          type: string
+        card_holder_name:
+          pattern: "^[a-zA-Z\\s]{1,100}$"
+          type: string
+        expiration_date:
+          type: string
+          format: date
+        creation_date:
+          type: string
+          format: date-time
+        state:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - BLOCKED
+            - DEFEATED
+    RechargeDto:
+      required:
+        - balance
+        - cardId
+      type: object
+      properties:
+        card_id:
+          pattern: "\\d{16}"
+          type: string
+        balance:
+          minimum: 1
+          type: number

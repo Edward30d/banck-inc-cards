@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: bank-inc
+  datasource:
+    url: jdbc:mysql://${MYSQL_ENDPOINT}/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+    ddl-auto: update
+    show-sql: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+server:
+  port: 8080
+  servlet:
+    context-path: /${spring.application.name}
